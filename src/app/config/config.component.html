@@ -1,0 +1,15 @@
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="user_token">User Token</label>
+    <input id="user_token" formControlName="user_token" />
+  </div>
+
+  <div>
+    <label for="secret_key">Secret Key</label>
+    <input id="secret_key" formControlName="secret_key" />
+  </div>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<span>{{ configForm.value | json }}</span>
