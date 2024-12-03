@@ -10,11 +10,10 @@ import {
 import { TokenService } from '../services/token.service';
 
 @Component({
-  selector: 'app-config',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
-  templateUrl: './config.component.html',
-  styleUrl: './config.component.scss',
+    selector: 'app-config',
+    imports: [ReactiveFormsModule, FormsModule, CommonModule],
+    templateUrl: './config.component.html',
+    styleUrl: './config.component.scss'
 })
 export class ConfigComponent {
   private tokenService = inject(TokenService);
