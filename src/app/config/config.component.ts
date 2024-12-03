@@ -7,13 +7,23 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { TokenService } from '../services/token.service';
 
 @Component({
-    selector: 'app-config',
-    imports: [ReactiveFormsModule, FormsModule, CommonModule],
-    templateUrl: './config.component.html',
-    styleUrl: './config.component.scss'
+  selector: 'app-config',
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
+  templateUrl: './config.component.html',
+  styleUrl: './config.component.scss',
 })
 export class ConfigComponent {
   private tokenService = inject(TokenService);

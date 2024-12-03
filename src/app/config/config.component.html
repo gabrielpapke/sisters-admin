@@ -1,15 +1,19 @@
-<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="user_token">User Token</label>
-    <input id="user_token" formControlName="user_token" />
-  </div>
+<form
+  [formGroup]="configForm"
+  (ngSubmit)="onSubmit()"
+  class="max-w-[500px] flex flex-col gap-2"
+>
+  <mat-form-field>
+    <mat-label for="user_token">User Token</mat-label>
+    <input matInput id="user_token" formControlName="user_token" />
+  </mat-form-field>
 
-  <div>
-    <label for="secret_key">Secret Key</label>
-    <input id="secret_key" formControlName="secret_key" />
-  </div>
+  <mat-form-field>
+    <mat-label for="secret_key">Secret Key</mat-label>
+    <input matInput id="secret_key" formControlName="secret_key" />
+  </mat-form-field>
 
-  <button type="submit">Salvar</button>
+  <div class="flex justify-end">
+    <button class="max-w-20" type="submit" mat-flat-button>Salvar</button>
+  </div>
 </form>
-
-<span>{{ configForm.value | json }}</span>
