@@ -13,6 +13,7 @@ import {
   ISkuForm,
   ProductComponent,
 } from '../product/product.component';
+import { ESupplier } from '../services/suppliers.service';
 import { IVariationsResponseItem } from '../services/variations.service';
 
 export interface IProductForm {
@@ -20,6 +21,7 @@ export interface IProductForm {
   id: FormControl<number | null>;
   name: FormControl<string | null>;
   brand: FormControl<number | null>;
+  supplier: FormControl<ESupplier | null>;
   categories: FormControl<number[] | null>;
   filters: FormControl<number[] | null>;
   variations: FormControl<IVariationsResponseItem | null>;
@@ -64,6 +66,10 @@ export class CreateProductsComponent {
           validators: Validators.required,
         }),
         brand: new FormControl(null, {
+          nonNullable: true,
+          validators: Validators.required,
+        }),
+        supplier: new FormControl(null, {
           nonNullable: true,
           validators: Validators.required,
         }),

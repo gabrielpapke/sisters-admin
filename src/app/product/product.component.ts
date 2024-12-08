@@ -36,6 +36,7 @@ import { IProductForm } from '../create-products/create-products.component';
 import { BrandsService } from '../services/brands.service';
 import { CategoriesService } from '../services/categories.service';
 import { FiltersService } from '../services/filters.service';
+import { SuppliersService } from '../services/suppliers.service';
 import {
   IVariationValuesItem,
   VariationsService,
@@ -82,6 +83,7 @@ export class ProductComponent implements OnInit {
   categoriesService = inject(CategoriesService);
   filtersService = inject(FiltersService);
   brandsService = inject(BrandsService);
+  suppliersService = inject(SuppliersService);
   variationsService = inject(VariationsService);
   cdr = inject(ChangeDetectorRef);
   fb = inject(FormBuilder);
@@ -90,6 +92,7 @@ export class ProductComponent implements OnInit {
   categories$ = this.categoriesService.getAllCategories();
   filters$ = this.filtersService.getAllFilters();
   brands$ = this.brandsService.getAllBrands();
+  suppliers$ = this.suppliersService.getAllSuppliers();
   variations$ = this.variationsService.getAllVariations();
 
   get isSimpleProduct() {
@@ -174,8 +177,16 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct() {
-    const { type, name, brand, categories, filters, variations, skus } =
-      this.productForm().value;
+    const {
+      type,
+      name,
+      brand,
+      supplier,
+      categories,
+      filters,
+      variations,
+      skus,
+    } = this.productForm().value;
 
     this.setLoading(true);
 
@@ -185,6 +196,7 @@ export class ProductComponent implements OnInit {
         type: type!,
         name: name!,
         brand: brand!,
+        supplier: supplier!,
         categories: categories ?? [],
         filters: filters ?? [],
         variations: variations ? [variations.id] : [],

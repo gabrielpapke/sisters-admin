@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { ESupplier, SuppliersService } from '../services/suppliers.service';
 import { EProductType, ISkuForm } from './product.component';
 
 export interface IProductRequest {
@@ -7,6 +8,7 @@ export interface IProductRequest {
   type: EProductType;
   name: string;
   brand: number;
+  supplier: ESupplier;
   categories: number[];
   filters: number[];
   variations: number[];
@@ -106,10 +108,12 @@ interface Variation {
 })
 export class ProductService {
   private http = inject(HttpClient);
+  private suppliersService = inject(SuppliersService);
 
   create({
     name,
     brand,
+    supplier,
     filters,
     categories,
     type,
@@ -134,7 +138,7 @@ export class ProductService {
         video: '',
         description: null,
         specifications: null,
-        measures: 'Medidas',
+        measures: this.suppliersService.getMeasureBySupply(supplier),
         gift_value: 0,
         seo_title: name,
         seo_description: null,
