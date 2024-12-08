@@ -20,4 +20,13 @@ export class TokenService {
 
     return { user_token, secret_key };
   }
+
+  cleanData(): void {
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('secret_key');
+  }
+
+  hasToken(): boolean {
+    return !!this.getData().secret_key && !!this.getData().user_token;
+  }
 }

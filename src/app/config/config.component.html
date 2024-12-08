@@ -1,4 +1,9 @@
+<h1 class="text-bold text-3xl mb-2">Configurações</h1>
+
+<p class="text-medium mb-4">Configure as chaves para ter acesso total</p>
+
 <form
+  #formGroupDirective
   [formGroup]="configForm"
   (ngSubmit)="onSubmit()"
   class="max-w-[500px] flex flex-col gap-2"
@@ -6,14 +11,34 @@
   <mat-form-field>
     <mat-label for="user_token">User Token</mat-label>
     <input matInput id="user_token" formControlName="user_token" />
+    @if (configForm.controls.user_token.hasError('required')) {
+    <mat-error>Campo obrigatório.</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field>
     <mat-label for="secret_key">Secret Key</mat-label>
     <input matInput id="secret_key" formControlName="secret_key" />
+    @if (configForm.controls.secret_key.hasError('required')) {
+    <mat-error>Campo obrigatório.</mat-error>
+    }
   </mat-form-field>
 
-  <div class="flex justify-end">
-    <button class="max-w-20" type="submit" mat-flat-button>Salvar</button>
+  <div class="flex justify-end gap-4">
+    <button
+      (click)="onCleanData($event)"
+      mat-button
+      [disabled]="configForm.invalid"
+    >
+      Limpar dados
+    </button>
+    <button
+      class="max-w-20"
+      type="submit"
+      mat-flat-button
+      [disabled]="configForm.invalid"
+    >
+      Salvar
+    </button>
   </div>
 </form>
