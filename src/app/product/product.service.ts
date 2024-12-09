@@ -11,6 +11,8 @@ export interface IProductRequest {
   supplier: ESupplier;
   categories: number[];
   filters: number[];
+  collections: number[];
+  flags: number[];
   variations: number[];
   skus: ISkuForm[];
 }
@@ -117,6 +119,8 @@ export class ProductService {
     filters,
     categories,
     type,
+    flags,
+    collections,
     variations,
     skus,
   }: IProductRequest) {
@@ -146,7 +150,8 @@ export class ProductService {
         canonical_url: null,
         search_terms: null,
         categories_ids: categories,
-        flags_ids: [],
+        flags_ids: flags,
+        collections_ids: collections,
         filters_values_ids: filters,
         use_different_images: false,
         variations_ids: variations,

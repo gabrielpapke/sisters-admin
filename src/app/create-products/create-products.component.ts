@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -14,7 +14,6 @@ import {
   ProductComponent,
 } from '../product/product.component';
 import { ESupplier } from '../services/suppliers.service';
-import { IVariationsResponseItem } from '../services/variations.service';
 
 export interface IProductForm {
   type: FormControl<EProductType>;
@@ -24,7 +23,9 @@ export interface IProductForm {
   supplier: FormControl<ESupplier | null>;
   categories: FormControl<number[] | null>;
   filters: FormControl<number[] | null>;
-  variations: FormControl<IVariationsResponseItem | null>;
+  flags: FormControl<number[] | null>;
+  collections: FormControl<number[] | null>;
+  variations: FormControl<number | null>;
   variation_values: FormControl<number[] | null>;
   skus: FormArray<FormControl<ISkuForm | null>>;
 }
@@ -34,6 +35,7 @@ export interface IProductForm {
   imports: [ProductComponent, CommonModule, MatButtonModule],
   templateUrl: './create-products.component.html',
   styleUrl: './create-products.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateProductsComponent {
   fb = inject(FormBuilder);
@@ -81,11 +83,16 @@ export class CreateProductsComponent {
           nonNullable: true,
           validators: Validators.required,
         }),
+        flags: new FormControl(null),
+        collections: new FormControl(null),
         variations: new FormControl(null, {
           nonNullable: true,
           validators: !isSimpleProduct ? Validators.required : null,
         }),
-        variation_values: new FormControl(null),
+        variation_values: new FormControl(null, {
+          nonNullable: true,
+          validators: !isSimpleProduct ? Validators.required : null,
+        }),
         skus: this.fb.array<ISkuForm>([]),
       })
     );

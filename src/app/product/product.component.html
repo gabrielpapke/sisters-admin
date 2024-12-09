@@ -55,10 +55,15 @@
             [disabled]="loading()"
           >
             @for (item of (variations$ | async)?.data; track item.id) {
-            <mat-option [value]="item">{{ item.name }}</mat-option>
+            <mat-option
+              (onSelectionChange)="onSelectVariation($event, item)"
+              [value]="item.id"
+              >{{ item.name }}</mat-option
+            >
             }
           </mat-select>
         </mat-form-field>
+
         <mat-form-field>
           <mat-label>Categorias</mat-label>
           <mat-select
@@ -67,6 +72,31 @@
             [disabled]="loading()"
           >
             @for (item of (categories$ | async)?.data; track item.id) {
+            <mat-option [value]="item.id">{{ item.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Coleções</mat-label>
+          <mat-select
+            [formControl]="productForm().controls.collections"
+            multiple
+            [disabled]="loading()"
+          >
+            @for (item of (collections$ | async)?.data; track item.id) {
+            <mat-option [value]="item.id">{{ item.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Selos</mat-label>
+          <mat-select
+            [formControl]="productForm().controls.flags"
+            multiple
+            [disabled]="loading()"
+          >
+            @for (item of (flags$ | async)?.data; track item.id) {
             <mat-option [value]="item.id">{{ item.name }}</mat-option>
             }
           </mat-select>
@@ -85,10 +115,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div
-          class="col-span-4"
-          *ngIf="this.productForm().controls.variations.value as variation"
-        >
+        <div class="col-span-4" *ngIf="selectedVariation() as variation">
           <h2 class="font-medium">Variações</h2>
 
           <div class="grid grid-cols-4 gap-4">
@@ -101,7 +128,7 @@
               >
                 @for (item of variation.values.data; track item.id) {
                 <mat-option
-                  (onSelectionChange)="onSelectVariation($event)"
+                  (onSelectionChange)="onSelectVariationValue($event)"
                   [value]="item"
                   >{{ item.name }}</mat-option
                 >
@@ -191,5 +218,3 @@
     </form>
   </mat-expansion-panel>
 </mat-accordion>
-
-<!-- {{ productForm().value | json }} -->

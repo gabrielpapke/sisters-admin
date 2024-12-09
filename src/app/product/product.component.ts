@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  EventEmitter,
   inject,
   input,
   OnInit,
@@ -35,9 +35,12 @@ import { DeleteProductModalComponent } from '../components/delete-product-modal/
 import { IProductForm } from '../create-products/create-products.component';
 import { BrandsService } from '../services/brands.service';
 import { CategoriesService } from '../services/categories.service';
+import { CollectionsService } from '../services/collections.service';
 import { FiltersService } from '../services/filters.service';
+import { FlagsService } from '../services/flags.service';
 import { SuppliersService } from '../services/suppliers.service';
 import {
+  IVariationsResponseItem,
   IVariationValuesItem,
   VariationsService,
 } from '../services/variations.service';
@@ -82,15 +85,18 @@ export class ProductComponent implements OnInit {
   productService = inject(ProductService);
   categoriesService = inject(CategoriesService);
   filtersService = inject(FiltersService);
+  collectionsService = inject(CollectionsService);
+  flagsService = inject(FlagsService);
   brandsService = inject(BrandsService);
   suppliersService = inject(SuppliersService);
   variationsService = inject(VariationsService);
-  cdr = inject(ChangeDetectorRef);
   fb = inject(FormBuilder);
   readonly dialog = inject(MatDialog);
 
   categories$ = this.categoriesService.getAllCategories();
   filters$ = this.filtersService.getAllFilters();
+  collections$ = this.collectionsService.getAllCollections();
+  flags$ = this.flagsService.getAllFlags();
   brands$ = this.brandsService.getAllBrands();
   suppliers$ = this.suppliersService.getAllSuppliers();
   variations$ = this.variationsService.getAllVariations();
@@ -108,33 +114,40 @@ export class ProductComponent implements OnInit {
   }
 
   productForm = input.required<FormGroup<IProductForm>>();
+  selectedVariation = signal<IVariationsResponseItem | null>(null);
   deleteProduct = output<void>();
   opened = signal(false);
   loading = signal(false);
+
+  private _destroy$ = new EventEmitter<void>();
 
   ngOnInit() {
     if (this.isSimpleProduct) {
       this.skus.push(this.createSku());
     }
-
-    this.productForm().controls.variations.valueChanges.subscribe((v) => {
-      this.productForm().controls.variation_values.reset();
-
-      if (!v) {
-        this.productForm().controls.variation_values.addValidators(
-          Validators.required
-        );
-      } else {
-        this.productForm().controls.variation_values.removeValidators(
-          Validators.required
-        );
-      }
-
-      this.productForm().controls.variation_values.updateValueAndValidity();
-    });
   }
 
-  onSelectVariation(event: MatOptionSelectionChange<IVariationValuesItem>) {
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  onSelectVariation(
+    event: MatOptionSelectionChange<number>,
+    item: IVariationsResponseItem
+  ) {
+    if (!event.isUserInput) return;
+
+    this.selectedVariation.set(item);
+    this.productForm().controls.variation_values.reset();
+    this.productForm().controls.skus.clear();
+  }
+
+  onSelectVariationValue(
+    event: MatOptionSelectionChange<IVariationValuesItem>
+  ) {
+    if (!event.isUserInput) return;
+
     const { value, selected } = event.source;
 
     if (selected) {
@@ -184,6 +197,8 @@ export class ProductComponent implements OnInit {
       supplier,
       categories,
       filters,
+      flags,
+      collections,
       variations,
       skus,
     } = this.productForm().value;
@@ -199,7 +214,9 @@ export class ProductComponent implements OnInit {
         supplier: supplier!,
         categories: categories ?? [],
         filters: filters ?? [],
-        variations: variations ? [variations.id] : [],
+        collections: collections ?? [],
+        flags: flags ?? [],
+        variations: variations ? [variations] : [],
         skus: skus as ISkuForm[],
       })
       .pipe(finalize(() => this.setLoading(false)))
