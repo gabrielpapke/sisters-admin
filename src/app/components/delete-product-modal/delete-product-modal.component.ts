@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -22,4 +23,8 @@ import {
 })
 export class DeleteProductModalComponent {
   readonly dialogRef = inject(MatDialogRef<DeleteProductModalComponent>);
+  data = inject<{ title: string; description: string }>(MAT_DIALOG_DATA);
+
+  modalTitle = signal(this.data.title ?? 'Deseja executar essa ação?');
+  modalDescription = signal(this.data.description ?? '');
 }

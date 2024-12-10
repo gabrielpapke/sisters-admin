@@ -25,13 +25,7 @@
   </mat-form-field>
 
   <div class="flex justify-end gap-4">
-    <button
-      (click)="onCleanData($event)"
-      mat-button
-      [disabled]="configForm.invalid"
-    >
-      Limpar dados
-    </button>
+    <button (click)="onCleanData($event)" mat-button>Limpar dados</button>
     <button
       class="max-w-20"
       type="submit"

@@ -1,6 +1,10 @@
-<h2 mat-dialog-title>Remover produto</h2>
-<mat-dialog-content> Deseja remover o produto? </mat-dialog-content>
+<h2 mat-dialog-title>{{ modalTitle() }}</h2>
+@if (modalDescription()) {
+<mat-dialog-content>
+  {{ modalDescription() }}
+</mat-dialog-content>
+}
 <mat-dialog-actions>
-  <button mat-button (click)="dialogRef.close(true)">Sim</button>
+  <button mat-flat-button (click)="dialogRef.close(true)">Sim</button>
   <button mat-button mat-dialog-close cdkFocusInitial>Não</button>
 </mat-dialog-actions>

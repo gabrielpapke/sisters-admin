@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,6 +13,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
 import {
   EProductType,
   ISkuForm,
@@ -32,13 +40,15 @@ export interface IProductForm {
 
 @Component({
   selector: 'app-create-products',
-  imports: [ProductComponent, CommonModule, MatButtonModule],
+  imports: [ProductComponent, CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './create-products.component.html',
   styleUrl: './create-products.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateProductsComponent {
   fb = inject(FormBuilder);
+  cdr = inject(ChangeDetectorRef);
+  readonly dialog = inject(MatDialog);
 
   products = this.fb.group({
     items: this.fb.array<FormGroup<IProductForm>>([]),
@@ -75,14 +85,8 @@ export class CreateProductsComponent {
           nonNullable: true,
           validators: Validators.required,
         }),
-        categories: new FormControl(null, {
-          nonNullable: true,
-          validators: Validators.required,
-        }),
-        filters: new FormControl(null, {
-          nonNullable: true,
-          validators: Validators.required,
-        }),
+        categories: new FormControl(null),
+        filters: new FormControl(null),
         flags: new FormControl(null),
         collections: new FormControl(null),
         variations: new FormControl(null, {
@@ -100,5 +104,27 @@ export class CreateProductsComponent {
 
   onDeleteProduct(index: number) {
     this.itemsArray.removeAt(index);
+  }
+
+  removeAllProducts(event: Event) {
+    event.preventDefault();
+
+    const diologRef = this.openDialog();
+
+    diologRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.itemsArray.clear();
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  openDialog(): MatDialogRef<DeleteProductModalComponent> {
+    return this.dialog.open(DeleteProductModalComponent, {
+      data: {
+        title: 'Remover produtos',
+        description: 'Deseja remover TODOS os produtos?',
+      },
+    });
   }
 }

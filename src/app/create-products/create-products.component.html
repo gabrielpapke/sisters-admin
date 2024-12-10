@@ -2,12 +2,24 @@
 
 <p class="text-medium mb-4">Adicione os produtos para cadastrar no sistema</p>
 
-<div class="flex gap-4">
-  <button click mat-flat-button (click)="addSimpleProduct()">
-    Adicionar produto sem variação
-  </button>
-  <button click mat-flat-button (click)="addVariationProduct()">
-    Adicionar produto com variação
+<div class="flex gap-4 justify-between items-center">
+  <div class="flex gap-4 items-center">
+    <button click mat-flat-button (click)="addSimpleProduct()">
+      Adicionar produto sem variação
+    </button>
+    <button click mat-flat-button (click)="addVariationProduct()">
+      Adicionar produto com variação
+    </button>
+  </div>
+
+  <button
+    mat-flat-button
+    disabled
+    [disabled]="itemsArray.length === 0"
+    (click)="removeAllProducts($event)"
+  >
+    <mat-icon>delete</mat-icon>
+    Remover todos
   </button>
 </div>
 

@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -26,15 +31,15 @@ import { TokenService } from '../services/token.service';
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfigComponent {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective | null =
     null;
 
   private tokenService = inject(TokenService);
-  private cdr = inject(ChangeDetectorRef);
   private initialValues = this.tokenService.getData();
-  private _snackBar = inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
 
   configForm = new FormGroup({
     user_token: new FormControl('', {
@@ -53,14 +58,16 @@ export class ConfigComponent {
 
   onCleanData(event: Event) {
     event.preventDefault();
+
     this.configForm.reset();
     this.formGroupDirective?.resetForm();
     this.tokenService.cleanData();
-    this.cdr.detectChanges();
+
+    this.openSnackBar('Os dados foram limpos');
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message);
+    this.snackBar.open(message);
   }
 
   onSubmit() {

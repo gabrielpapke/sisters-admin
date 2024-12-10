@@ -255,7 +255,10 @@ export class ProductComponent implements OnInit {
 
   openDialog(): MatDialogRef<DeleteProductModalComponent> {
     return this.dialog.open(DeleteProductModalComponent, {
-      width: '250px',
+      data: {
+        title: 'Remover produto',
+        description: 'Deseja remover o produto?',
+      },
     });
   }
 }
