@@ -29,6 +29,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { catchError, finalize, throwError } from 'rxjs';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
@@ -78,6 +79,7 @@ export enum EProductType {
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    MatMenuModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -6,9 +6,17 @@
         (hasError()) { ❌ }
         {{ productForm().controls.name.value ?? "Nome do Produto" }}
       </mat-panel-title>
-      <mat-panel-description>{{
-        isSimpleProduct ? "Produto simples" : "Produto com variação"
-      }}</mat-panel-description>
+      <mat-panel-description class="justify-between items-center"
+        >{{ isSimpleProduct ? "Produto simples" : "Produto com variação" }}
+        <button
+          mat-icon-button
+          (click)="$event.stopPropagation()"
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </mat-panel-description>
     </mat-expansion-panel-header>
     <form [formGroup]="productForm()" (ngSubmit)="onSubmit()">
       <div class="grid grid-cols-4 gap-4">
@@ -194,16 +202,6 @@
       </div>
       <mat-action-row>
         <button
-          mat-flat-button
-          disabled
-          [disabled]="loading()"
-          (click)="onClickDeleteProduct($event)"
-        >
-          <mat-icon>delete</mat-icon>
-          Remover
-        </button>
-
-        <button
           *ngIf="!created"
           mat-button
           type="submit"
@@ -215,3 +213,21 @@
     </form>
   </mat-expansion-panel>
 </mat-accordion>
+
+<mat-menu #menu="matMenu">
+  <!-- <button
+    mat-menu-item
+    [disabled]="loading()"
+  >
+    <mat-icon>content_copy</mat-icon>
+    <span>Duplicar</span>
+  </button> -->
+  <button
+    mat-menu-item
+    [disabled]="loading()"
+    (click)="onClickDeleteProduct($event)"
+  >
+    <mat-icon>delete</mat-icon>
+    <span>Remover</span>
+  </button>
+</mat-menu>
