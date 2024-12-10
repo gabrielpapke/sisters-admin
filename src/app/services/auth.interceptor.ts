@@ -1,14 +1,19 @@
-import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { TokenService } from './token.service';
 
-export function authInterceptor(
+export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
-) {
-  // Inject the current `AuthService` and use it to get an authentication token:
+): Observable<HttpEvent<unknown>> => {
   const { user_token, secret_key } = inject(TokenService).getData();
-  // Clone the request to add the authentication header.
+
   const headers = req.headers
     .append('Content-Type', 'application/json')
     .append('User-Token', user_token ?? '')
@@ -18,4 +23,4 @@ export function authInterceptor(
     headers,
   });
   return next(newReq);
-}
+};

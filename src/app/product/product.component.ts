@@ -30,7 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { finalize } from 'rxjs';
+import { catchError, finalize, throwError } from 'rxjs';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
 import { IProductForm } from '../create-products/create-products.component';
 import { BrandsService } from '../services/brands.service';
@@ -118,6 +118,7 @@ export class ProductComponent implements OnInit {
   deleteProduct = output<void>();
   opened = signal(false);
   loading = signal(false);
+  hasError = signal(false);
 
   private _destroy$ = new EventEmitter<void>();
 
@@ -204,6 +205,7 @@ export class ProductComponent implements OnInit {
     } = this.productForm().value;
 
     this.setLoading(true);
+    this.hasError.set(false);
 
     this.productService
       .create({
@@ -219,7 +221,13 @@ export class ProductComponent implements OnInit {
         variations: variations ? [variations] : [],
         skus: skus as ISkuForm[],
       })
-      .pipe(finalize(() => this.setLoading(false)))
+      .pipe(
+        catchError((error) => {
+          this.hasError.set(true);
+          return throwError(() => error);
+        }),
+        finalize(() => this.setLoading(false))
+      )
       .subscribe((response) => {
         this.productForm().patchValue({
           id: response.data.id,
@@ -233,7 +241,9 @@ export class ProductComponent implements OnInit {
     this.createProduct();
   }
 
-  onClickDeleteProduct() {
+  onClickDeleteProduct(event: Event) {
+    event.preventDefault();
+
     const diologRef = this.openDialog();
 
     diologRef.afterClosed().subscribe((result) => {

@@ -1,12 +1,9 @@
 <mat-accordion>
-  <mat-expansion-panel
-    [ngClass]="{ '!bg-green-200': productForm().controls.id.value }"
-    [expanded]="opened()"
-    (opened)="toggle()"
-  >
+  <mat-expansion-panel [expanded]="opened()" (opened)="toggle()">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        @if (created) { [{{ productForm().controls.id.value }}] }
+        @if (created) { ✅ [{{ productForm().controls.id.value }}] } @if
+        (hasError()) { ❌ }
         {{ productForm().controls.name.value ?? "Nome do Produto" }}
       </mat-panel-title>
       <mat-panel-description>{{
@@ -200,7 +197,7 @@
           mat-flat-button
           disabled
           [disabled]="loading()"
-          (click)="onClickDeleteProduct()"
+          (click)="onClickDeleteProduct($event)"
         >
           <mat-icon>delete</mat-icon>
           Remover
@@ -210,7 +207,7 @@
           *ngIf="!created"
           mat-button
           type="submit"
-          [disabled]="loading()"
+          [disabled]="loading() || productForm().invalid"
         >
           {{ loading() ? "Cadastrando..." : "Cadastrar" }}
         </button>
