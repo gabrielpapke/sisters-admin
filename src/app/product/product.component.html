@@ -157,16 +157,12 @@
                   [readonly]="true"
                   matInput
                   formControlName="name"
-                  [value]="sku.value?.name"
+                  [value]="sku.value.name"
                 />
               </mat-form-field>
               <mat-form-field class="basis-[150px]">
                 <mat-label>SKU</mat-label>
-                <input
-                  matInput
-                  formControlName="sku"
-                  [value]="sku.value?.sku"
-                />
+                <input matInput formControlName="sku" [value]="sku.value.sku" />
               </mat-form-field>
 
               <mat-form-field>
@@ -174,7 +170,7 @@
                 <input
                   matInput
                   formControlName="price_cost"
-                  [value]="sku.value?.price_cost"
+                  [value]="sku.value.price_cost"
                 />
               </mat-form-field>
 
@@ -183,7 +179,7 @@
                 <input
                   matInput
                   formControlName="price_sale"
-                  [value]="sku.value?.price_sale"
+                  [value]="sku.value.price_sale"
                 />
               </mat-form-field>
 
@@ -192,7 +188,7 @@
                 <input
                   matInput
                   formControlName="price_discount"
-                  [value]="sku.value?.price_discount"
+                  [value]="sku.value.price_discount"
                 />
               </mat-form-field>
             </div>
@@ -215,13 +211,14 @@
 </mat-accordion>
 
 <mat-menu #menu="matMenu">
-  <!-- <button
+  <button
     mat-menu-item
+    (click)="onClickDuplicateProduct($event)"
     [disabled]="loading()"
   >
     <mat-icon>content_copy</mat-icon>
     <span>Duplicar</span>
-  </button> -->
+  </button>
   <button
     mat-menu-item
     [disabled]="loading()"

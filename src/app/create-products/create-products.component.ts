@@ -18,10 +18,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
 import {
   EProductType,
+  IDuplicateProductEvent,
   ISkuForm,
   ProductComponent,
 } from '../product/product.component';
 import { ESupplier } from '../services/suppliers.service';
+import { IVariationValuesItem } from '../services/variations.service';
+
+export type ISkuFormArray = FormArray<FormGroup<ISkuForm>>;
 
 export interface IProductForm {
   type: FormControl<EProductType>;
@@ -34,8 +38,8 @@ export interface IProductForm {
   flags: FormControl<number[] | null>;
   collections: FormControl<number[] | null>;
   variations: FormControl<number | null>;
-  variation_values: FormControl<number[] | null>;
-  skus: FormArray<FormControl<ISkuForm | null>>;
+  variation_values: FormControl<IVariationValuesItem[] | null>;
+  skus: ISkuFormArray;
 }
 
 @Component({
@@ -59,51 +63,98 @@ export class CreateProductsComponent {
   }
 
   addVariationProduct() {
-    this.addProduct(EProductType.VARIATION);
+    this.addProduct({ type: EProductType.VARIATION });
   }
 
   addSimpleProduct() {
-    this.addProduct(EProductType.SIMPLE);
+    this.addProduct({ type: EProductType.SIMPLE });
   }
 
-  addProduct(type: EProductType) {
+  addProduct({
+    type,
+    form,
+    incrementalDuplicate,
+  }: {
+    type: EProductType;
+    form?: Partial<FormGroup<IProductForm>>;
+    incrementalDuplicate?: number;
+  }) {
     const isSimpleProduct = type === EProductType.SIMPLE;
 
     this.itemsArray.push(
       this.fb.group<IProductForm>({
         id: new FormControl(null),
         type: new FormControl(type, { nonNullable: true }),
-        name: new FormControl(null, {
+        name: new FormControl(
+          form?.value?.name
+            ? incrementalDuplicate
+              ? `${form?.value?.name} (${incrementalDuplicate})`
+              : form?.value?.name
+            : null,
+          {
+            nonNullable: true,
+            validators: Validators.required,
+          }
+        ),
+        brand: new FormControl(form?.value?.brand ?? null, {
           nonNullable: true,
           validators: Validators.required,
         }),
-        brand: new FormControl(null, {
+        supplier: new FormControl(form?.value?.supplier ?? null, {
           nonNullable: true,
           validators: Validators.required,
         }),
-        supplier: new FormControl(null, {
-          nonNullable: true,
-          validators: Validators.required,
-        }),
-        categories: new FormControl(null),
-        filters: new FormControl(null),
-        flags: new FormControl(null),
-        collections: new FormControl(null),
-        variations: new FormControl(null, {
+        categories: new FormControl(form?.value?.categories ?? null),
+        filters: new FormControl(form?.value?.filters ?? null),
+        flags: new FormControl(form?.value?.flags ?? null),
+        collections: new FormControl(form?.value?.collections ?? null),
+        variations: new FormControl(form?.value?.variations ?? null, {
           nonNullable: true,
           validators: !isSimpleProduct ? Validators.required : null,
         }),
-        variation_values: new FormControl(null, {
-          nonNullable: true,
-          validators: !isSimpleProduct ? Validators.required : null,
-        }),
-        skus: this.fb.array<ISkuForm>([]),
+        variation_values: new FormControl(
+          form?.value?.variation_values ?? null,
+          {
+            nonNullable: true,
+            validators: !isSimpleProduct ? Validators.required : null,
+          }
+        ),
+        skus: this.fb.array<FormGroup<ISkuForm>>(
+          form?.controls?.skus.controls.length
+            ? form?.controls?.skus.controls.map((control) =>
+                this.createSkuForm(control.value as Partial<ISkuForm>)
+              )
+            : []
+        ),
       })
     );
+
+    this.cdr.markForCheck();
+  }
+
+  createSkuForm(sku: Partial<ISkuForm> = {}): FormGroup<ISkuForm> {
+    return this.fb.group({
+      id: new FormControl(0),
+      variation_id: new FormControl(sku?.variation_id ?? null),
+      name: new FormControl(sku?.name ?? null),
+      sku: new FormControl(sku?.sku ?? '', { nonNullable: true }),
+      price_cost: new FormControl(sku?.price_cost ?? 0, { nonNullable: true }),
+      price_sale: new FormControl(sku?.price_sale ?? 0, { nonNullable: true }),
+      price_discount: new FormControl(sku?.price_discount ?? 0, {
+        nonNullable: true,
+      }),
+    });
   }
 
   onDeleteProduct(index: number) {
     this.itemsArray.removeAt(index);
+    this.cdr.markForCheck();
+  }
+
+  onDuplicateProduct({ form, incrementalDuplicate }: IDuplicateProductEvent) {
+    const type = form.value?.type!;
+
+    this.addProduct({ type, form, incrementalDuplicate });
   }
 
   removeAllProducts(event: Event) {

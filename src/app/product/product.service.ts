@@ -14,7 +14,7 @@ export interface IProductRequest {
   collections: number[];
   flags: number[];
   variations: number[];
-  skus: ISkuForm[];
+  skus: Partial<ISkuForm>[];
 }
 
 interface IProductResponse {
