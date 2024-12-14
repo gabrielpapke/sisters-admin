@@ -1,13 +1,21 @@
 <mat-accordion>
   <mat-expansion-panel [expanded]="opened()" (opened)="toggle()">
     <mat-expansion-panel-header>
-      <mat-panel-title>
+      <mat-panel-title class="text-sm md:text-base">
         @if (created) { ✅ [{{ productForm().controls.id.value }}] } @if
         (hasError()) { ❌ }
-        {{ productForm().controls.name.value ?? "Nome do Produto" }}
+        {{
+          productForm().controls.name.value
+            ? productForm().controls.name.value
+            : "Nome do produto"
+        }}
       </mat-panel-title>
-      <mat-panel-description class="justify-between items-center"
-        >{{ isSimpleProduct ? "Produto simples" : "Produto com variação" }}
+      <mat-panel-description
+        class="panel-description justify-between items-center gap-2"
+      >
+        <span class="hidden md:block">
+          {{ isSimpleProduct ? "Produto simples" : "Produto com variação" }}
+        </span>
         <button
           mat-icon-button
           (click)="$event.stopPropagation()"
@@ -19,8 +27,10 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <form [formGroup]="productForm()" (ngSubmit)="onSubmit()">
-      <div class="grid grid-cols-4 gap-4">
-        <mat-form-field class="col-span-2">
+      <div
+        class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 text-sm md:text-base"
+      >
+        <mat-form-field class="md:col-span-2">
           <mat-label>Nome do produto</mat-label>
           <input
             matInput
@@ -120,10 +130,10 @@
           </mat-select>
         </mat-form-field>
 
-        <div class="col-span-4" *ngIf="selectedVariation() as variation">
+        <div class="md:col-span-4" *ngIf="selectedVariation() as variation">
           <h2 class="font-medium">Variações</h2>
 
-          <div class="grid grid-cols-4 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
             <mat-form-field>
               <mat-label>{{ variation.name }}</mat-label>
               <mat-select
@@ -144,14 +154,20 @@
         </div>
 
         <div
-          class="col-span-4"
+          class="md:col-span-4"
           *ngIf="this.productForm().controls.skus.value.length"
         >
-          <div formArrayName="skus">
+          <div formArrayName="skus" class="divide-y flex flex-col">
             @for(sku of this.productForm().controls.skus.controls; track sku;
             let i = $index) {
-            <div class="flex gap-4 w-full" [formGroupName]="i">
-              <mat-form-field *ngIf="sku.value?.name" class="basis-[100px]">
+            <div
+              class="grid grid-cols-2 md:flex md:flex-row gap-2 md:gap-4 w-full pt-4"
+              [formGroupName]="i"
+            >
+              <mat-form-field
+                *ngIf="sku.value?.name"
+                class="max-md:col-span-2 md:basis-[100px]"
+              >
                 <mat-label>Variação</mat-label>
                 <input
                   [readonly]="true"
@@ -160,7 +176,7 @@
                   [value]="sku.value.name"
                 />
               </mat-form-field>
-              <mat-form-field class="basis-[150px]">
+              <mat-form-field class="md:basis-[150px]">
                 <mat-label>SKU</mat-label>
                 <input matInput formControlName="sku" [value]="sku.value.sku" />
               </mat-form-field>

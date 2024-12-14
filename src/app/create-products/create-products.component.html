@@ -1,9 +1,13 @@
-<h1 class="text-bold text-3xl mb-2">Cadastrar produtos</h1>
+<header class="mb-4">
+  <h1 class="font-medium text-xl md:text-3xl mb-2">Cadastrar produtos</h1>
 
-<p class="text-medium mb-4">Adicione os produtos para cadastrar no sistema</p>
+  <p class="text-sm md:text-base">
+    Adicione os produtos para cadastrar no sistema
+  </p>
+</header>
 
-<div class="flex gap-4 justify-between items-center">
-  <div class="flex gap-4 items-center">
+<div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+  <div class="flex gap-4 items-center flex-col md:flex-row">
     <button click mat-flat-button (click)="addSimpleProduct()">
       Adicionar produto sem variação
     </button>

@@ -1,12 +1,14 @@
-<h1 class="text-bold text-3xl mb-2">Configurações</h1>
+<header class="mb-4">
+  <h1 class="font-medium text-xl md:text-3xl mb-2">Configurações</h1>
 
-<p class="text-medium mb-4">Configure as chaves para ter acesso total</p>
+  <p class="text-sm md:text-base">Configure as chaves para ter acesso total</p>
+</header>
 
 <form
   #formGroupDirective
   [formGroup]="configForm"
   (ngSubmit)="onSubmit()"
-  class="max-w-[500px] flex flex-col gap-2"
+  class="flex flex-col gap-2"
 >
   <mat-form-field>
     <mat-label for="user_token">User Token</mat-label>

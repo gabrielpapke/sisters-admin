@@ -6,6 +6,12 @@
       container-divider-color: theme("colors.gray.200"),
     )
   );
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: theme("colors.rose.400"),
+      container-text-color: theme("colors.white"),
+    )
+  );
 }
 
 .sidenav {

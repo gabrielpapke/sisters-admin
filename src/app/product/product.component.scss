@@ -6,3 +6,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.panel-description {
+  @apply flex-grow-0 whitespace-nowrap;
+}
