@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { hasTokenGuard } from '../guards/has-token.guard';
+import { hasTokenGuard } from './guards/has-token.guard';
 import { ConfigComponent } from './pages/config/config.component';
 import { CreateProductsComponent } from './pages/create-products/create-products.component';
 import { HomeComponent } from './pages/home/home.component';
