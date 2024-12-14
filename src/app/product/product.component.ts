@@ -45,6 +45,7 @@ import {
   IProductForm,
   ISkuFormArray,
 } from '../create-products/create-products.component';
+import { DisableControlDirective } from '../directives/disable-control.directive';
 import { BrandsService } from '../services/brands.service';
 import { CategoriesService } from '../services/categories.service';
 import { CollectionsService } from '../services/collections.service';
@@ -96,6 +97,7 @@ export interface IDuplicateProductEvent {
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
+    DisableControlDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
