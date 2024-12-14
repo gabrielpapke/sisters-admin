@@ -17,8 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HeaderComponent } from '../components/header/header.component';
-import { TokenService } from '../services/token.service';
+import { HeaderComponent } from '../../components/header/header.component';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-config',
