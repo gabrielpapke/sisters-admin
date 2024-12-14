@@ -25,23 +25,23 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { map, take, takeUntil, tap } from 'rxjs';
-import { DisableControlDirective } from '../../../../../directives/disable-control.directive';
-import { BrandsService } from '../../../../../services/brands.service';
-import { CategoriesService } from '../../../../../services/categories.service';
-import { CollectionsService } from '../../../../../services/collections.service';
-import { FiltersService } from '../../../../../services/filters.service';
-import { FlagsService } from '../../../../../services/flags.service';
-import { SuppliersService } from '../../../../../services/suppliers.service';
+import { DisableControlDirective } from '@directives/disable-control.directive';
+import {
+  IProductForm,
+  ISkuFormArray,
+} from '@pages/create-products/create-products.component';
+import { BrandsService } from '@services/brands.service';
+import { CategoriesService } from '@services/categories.service';
+import { CollectionsService } from '@services/collections.service';
+import { FiltersService } from '@services/filters.service';
+import { FlagsService } from '@services/flags.service';
+import { SuppliersService } from '@services/suppliers.service';
 import {
   IVariationsResponseItem,
   IVariationValuesItem,
   VariationsService,
-} from '../../../../../services/variations.service';
-import {
-  IProductForm,
-  ISkuFormArray,
-} from '../../../create-products.component';
+} from '@services/variations.service';
+import { map, take, takeUntil, tap } from 'rxjs';
 import { EProductType, ISkuForm } from '../product.component';
 
 @Component({

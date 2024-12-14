@@ -1,9 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  ESupplier,
-  SuppliersService,
-} from '../../../../services/suppliers.service';
+import { ESupplier, SuppliersService } from '@services/suppliers.service';
 import { EProductType, ISkuForm } from './product.component';
 
 export interface IProductRequest {

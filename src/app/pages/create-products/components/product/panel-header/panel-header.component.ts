@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { IProductForm } from '../../../create-products.component';
+import { IProductForm } from '@pages/create-products/create-products.component';
 import { EProductType } from '../product.component';
 
 @Component({
