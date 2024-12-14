@@ -41,6 +41,7 @@ import {
   throwError,
 } from 'rxjs';
 import { DeleteProductModalComponent } from '../../../components/delete-product-modal/delete-product-modal.component';
+import { ExpansionPanelComponent } from '../../../components/expansion-panel/expansion-panel.component';
 import {
   IProductForm,
   ISkuFormArray,
@@ -57,6 +58,7 @@ import {
   IVariationValuesItem,
   VariationsService,
 } from '../../../services/variations.service';
+import { PanelHeaderComponent } from './panel-header/panel-header.component';
 import { ProductService } from './product.service';
 
 export interface ISkuForm {
@@ -92,11 +94,12 @@ export interface IDuplicateProductEvent {
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatButtonModule,
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
+    ExpansionPanelComponent,
+    PanelHeaderComponent,
     DisableControlDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

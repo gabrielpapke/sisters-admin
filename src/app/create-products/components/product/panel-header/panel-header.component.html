@@ -1,0 +1,41 @@
+<div class="text-sm md:text-base">
+  @if (isProductCreated()) { ✅ [{{ productForm().controls.id.value }}] } @if
+  (hasError()) { ❌ }
+  {{
+    productForm().controls.name.value
+      ? productForm().controls.name.value
+      : "Nome do produto"
+  }}
+</div>
+<div class="panel-description items-center gap-2 flex">
+  <span class="hidden md:block">
+    {{ isSimpleProduct ? "Produto simples" : "Produto com variação" }}
+  </span>
+  <button
+    mat-icon-button
+    (click)="$event.stopPropagation()"
+    [matMenuTriggerFor]="menu"
+    aria-label="Example icon-button with a menu"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
+
+<mat-menu #menu="matMenu">
+  <button
+    mat-menu-item
+    (click)="onDuplicateProduct.emit($event)"
+    [disabled]="loading()"
+  >
+    <mat-icon>content_copy</mat-icon>
+    <span>Duplicar</span>
+  </button>
+  <button
+    mat-menu-item
+    [disabled]="loading()"
+    (click)="onRemoveProduct.emit($event)"
+  >
+    <mat-icon>delete</mat-icon>
+    <span>Remover</span>
+  </button>
+</mat-menu>

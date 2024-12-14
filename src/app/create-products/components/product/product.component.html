@@ -1,32 +1,17 @@
 <mat-accordion>
-  <mat-expansion-panel [expanded]="opened()" (opened)="toggle()">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="text-sm md:text-base">
-        @if (created) { ✅ [{{ productForm().controls.id.value }}] } @if
-        (hasError()) { ❌ }
-        {{
-          productForm().controls.name.value
-            ? productForm().controls.name.value
-            : "Nome do produto"
-        }}
-      </mat-panel-title>
-      <mat-panel-description
-        class="panel-description justify-between items-center gap-2"
-      >
-        <span class="hidden md:block">
-          {{ isSimpleProduct ? "Produto simples" : "Produto com variação" }}
-        </span>
-        <button
-          mat-icon-button
-          (click)="$event.stopPropagation()"
-          [matMenuTriggerFor]="menu"
-          aria-label="Example icon-button with a menu"
-        >
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <form [formGroup]="productForm()" (ngSubmit)="onSubmit()">
+  <app-expansion-panel [expanded]="opened()" (opened)="toggle()">
+    <app-panel-header
+      class="w-full flex justify-between items-center"
+      header
+      [productForm]="productForm()"
+      [isProductCreated]="created"
+      [loading]="loading()"
+      [hasError]="hasError()"
+      (onDuplicateProduct)="onClickDuplicateProduct($event)"
+      (onRemoveProduct)="onClickDeleteProduct($event)"
+    />
+
+    <form body [formGroup]="productForm()" (ngSubmit)="onSubmit()">
       <div
         class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 text-sm md:text-base"
       >
@@ -223,24 +208,5 @@
         </button>
       </mat-action-row>
     </form>
-  </mat-expansion-panel>
+  </app-expansion-panel>
 </mat-accordion>
-
-<mat-menu #menu="matMenu">
-  <button
-    mat-menu-item
-    (click)="onClickDuplicateProduct($event)"
-    [disabled]="loading()"
-  >
-    <mat-icon>content_copy</mat-icon>
-    <span>Duplicar</span>
-  </button>
-  <button
-    mat-menu-item
-    [disabled]="loading()"
-    (click)="onClickDeleteProduct($event)"
-  >
-    <mat-icon>delete</mat-icon>
-    <span>Remover</span>
-  </button>
-</mat-menu>
