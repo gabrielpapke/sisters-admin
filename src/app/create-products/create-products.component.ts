@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
+import { HeaderComponent } from '../components/header/header.component';
 import {
   EProductType,
   IDuplicateProductEvent,
@@ -44,7 +45,13 @@ export interface IProductForm {
 
 @Component({
   selector: 'app-create-products',
-  imports: [ProductComponent, CommonModule, MatButtonModule, MatIconModule],
+  imports: [
+    ProductComponent,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    HeaderComponent,
+  ],
   templateUrl: './create-products.component.html',
   styleUrl: './create-products.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
