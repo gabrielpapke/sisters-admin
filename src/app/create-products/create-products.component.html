@@ -3,33 +3,26 @@
   description="Adicione os produtos para cadastrar no sistema"
 />
 
-<div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
-  <div class="flex gap-4 items-center flex-col md:flex-row">
-    <button click mat-flat-button (click)="addSimpleProduct()">
-      Adicionar produto sem variação
-    </button>
-    <button click mat-flat-button (click)="addVariationProduct()">
-      Adicionar produto com variação
-    </button>
-  </div>
-
-  <button
-    mat-flat-button
-    disabled
-    [disabled]="itemsArray.length === 0"
-    (click)="removeAllProducts($event)"
-  >
-    <mat-icon>delete</mat-icon>
-    Remover todos
-  </button>
-</div>
+<app-general-actions
+  [hasProducts]="productsArray.length === 0"
+  (onAddSimpleProduct)="addSimpleProduct()"
+  (onAddVariationProduct)="addVariationProduct()"
+  (onRemoveAllProducts)="removeAllProducts($event)"
+/>
 
 <div class="flex flex-col gap-4">
-  @for (item of itemsArray.controls; track item; let i = $index) {
+  @for (item of productsArray.controls; track item; let i = $index) {
   <app-product
     [productForm]="item"
     (deleteProduct)="onDeleteProduct(i)"
     (duplicateProduct)="onDuplicateProduct($event)"
   />
+  } @empty {
+  <mat-card appearance="outlined" class="py-10">
+    <mat-card-content class="text-center"
+      ><span class="font-medium">Nenhum produto adicionado.</span> <br />
+      Utilize as ações acima para adicionar.</mat-card-content
+    >
+  </mat-card>
   }
 </div>

@@ -12,9 +12,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
 import { HeaderComponent } from '../components/header/header.component';
 import {
@@ -25,6 +24,7 @@ import {
 } from '../product/product.component';
 import { ESupplier } from '../services/suppliers.service';
 import { IVariationValuesItem } from '../services/variations.service';
+import { GeneralActionsComponent } from './components/general-actions/general-actions.component';
 
 export type ISkuFormArray = FormArray<FormGroup<ISkuForm>>;
 
@@ -48,9 +48,9 @@ export interface IProductForm {
   imports: [
     ProductComponent,
     CommonModule,
-    MatButtonModule,
-    MatIconModule,
+    GeneralActionsComponent,
     HeaderComponent,
+    MatCardModule,
   ],
   templateUrl: './create-products.component.html',
   styleUrl: './create-products.component.scss',
@@ -61,12 +61,12 @@ export class CreateProductsComponent {
   cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
 
-  products = this.fb.group({
-    items: this.fb.array<FormGroup<IProductForm>>([]),
+  mainForm = this.fb.group({
+    products: this.fb.array<FormGroup<IProductForm>>([]),
   });
 
-  get itemsArray(): FormArray<FormGroup<IProductForm>> {
-    return this.products.get('items') as FormArray<FormGroup<IProductForm>>;
+  get productsArray(): FormArray<FormGroup<IProductForm>> {
+    return this.mainForm.get('products') as FormArray<FormGroup<IProductForm>>;
   }
 
   addVariationProduct() {
@@ -88,7 +88,7 @@ export class CreateProductsComponent {
   }) {
     const isSimpleProduct = type === EProductType.SIMPLE;
 
-    this.itemsArray.push(
+    this.productsArray.push(
       this.fb.group<IProductForm>({
         id: new FormControl(null),
         type: new FormControl(type, { nonNullable: true }),
@@ -154,7 +154,7 @@ export class CreateProductsComponent {
   }
 
   onDeleteProduct(index: number) {
-    this.itemsArray.removeAt(index);
+    this.productsArray.removeAt(index);
     this.cdr.markForCheck();
   }
 
@@ -171,7 +171,7 @@ export class CreateProductsComponent {
 
     diologRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.itemsArray.clear();
+        this.productsArray.clear();
         this.cdr.markForCheck();
       }
     });
