@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -11,8 +12,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     RouterLinkActive,
     MatNavList,
     MatListItem,
+    MatIconModule,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent {}
+export class MenuComponent {
+  onCloseButtonClick = output<void>();
+  onMenuItemClick = output<void>();
+}

@@ -1,0 +1,13 @@
+@use "@angular/material" as mat;
+
+:host {
+  @include mat.sidenav-overrides(
+    (
+      container-divider-color: theme("colors.gray.200"),
+    )
+  );
+}
+
+.sidenav {
+  @apply rounded-none;
+}

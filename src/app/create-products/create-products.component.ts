@@ -88,8 +88,8 @@ export class CreateProductsComponent {
         name: new FormControl(
           form?.value?.name
             ? incrementalDuplicate
-              ? `${form?.value?.name} (${incrementalDuplicate})`
-              : form?.value?.name
+              ? `${form.value.name} (${incrementalDuplicate})`
+              : form.value.name
             : null,
           {
             nonNullable: true,

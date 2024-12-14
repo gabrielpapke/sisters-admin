@@ -1,14 +1,42 @@
-<h1 class="text-center border-b">
-  <a href="#" class="block py-6">Sisters Fitness</a>
+<h1 class="text-center border-b flex items-center px-4">
+  <a href="#" class="block py-6 flex-1 font-medium">Menu</a>
+  <button
+    mat-icon-button
+    aria-label="Fechar menu"
+    (click)="onCloseButtonClick.emit()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
 </h1>
 
 <div class="px-6">
   <mat-nav-list class="space-y-2">
-    <a routerLink="/" routerLinkActive="active" mat-list-item>Início</a>
-    <a routerLink="/cadastrar-produtos" routerLinkActive="active" mat-list-item
+    <a
+      #itemHome
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [activated]="itemHome._hostElement.classList.contains('active')"
+      mat-list-item
+      (click)="onMenuItemClick.emit()"
+      >Início</a
+    >
+    <a
+      #itemCreateProduct
+      routerLink="/cadastrar-produtos"
+      routerLinkActive="active"
+      [activated]="itemCreateProduct._hostElement.classList.contains('active')"
+      mat-list-item
+      (click)="onMenuItemClick.emit()"
       >Cadastrar Produto</a
     >
-    <a routerLink="/configuracoes" routerLinkActive="active" mat-list-item
+    <a
+      #itemConfigurations
+      routerLink="/configuracoes"
+      routerLinkActive="active"
+      [activated]="itemConfigurations._hostElement.classList.contains('active')"
+      mat-list-item
+      (click)="onMenuItemClick.emit()"
       >Configurações</a
     >
   </mat-nav-list>

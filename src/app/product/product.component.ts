@@ -128,8 +128,8 @@ export class ProductComponent implements OnInit {
     return this.productForm()?.get('skus') as ISkuFormArray;
   }
 
-  get created() {
-    return this.productForm().controls.id.value;
+  get created(): boolean {
+    return !!this.productForm().controls.id.value;
   }
 
   productForm = input.required<FormGroup<IProductForm>>();
