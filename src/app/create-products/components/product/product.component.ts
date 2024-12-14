@@ -3,61 +3,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   inject,
   input,
-  OnInit,
   output,
   signal,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import {
-  MatOptionSelectionChange,
-  provideNativeDateAdapter,
-} from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormControl, FormGroup } from '@angular/forms';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import {
-  catchError,
-  finalize,
-  map,
-  take,
-  takeUntil,
-  tap,
-  throwError,
-} from 'rxjs';
+import { MatAccordion } from '@angular/material/expansion';
+import { catchError, finalize, throwError } from 'rxjs';
 import { DeleteProductModalComponent } from '../../../components/delete-product-modal/delete-product-modal.component';
 import { ExpansionPanelComponent } from '../../../components/expansion-panel/expansion-panel.component';
-import {
-  IProductForm,
-  ISkuFormArray,
-} from '../../../create-products/create-products.component';
-import { DisableControlDirective } from '../../../directives/disable-control.directive';
-import { BrandsService } from '../../../services/brands.service';
-import { CategoriesService } from '../../../services/categories.service';
-import { CollectionsService } from '../../../services/collections.service';
-import { FiltersService } from '../../../services/filters.service';
-import { FlagsService } from '../../../services/flags.service';
-import { SuppliersService } from '../../../services/suppliers.service';
-import {
-  IVariationsResponseItem,
-  IVariationValuesItem,
-  VariationsService,
-} from '../../../services/variations.service';
+import { IProductForm } from '../../../create-products/create-products.component';
+import { PanelContentComponent } from './panel-content/panel-content.component';
 import { PanelHeaderComponent } from './panel-header/panel-header.component';
 import { ProductService } from './product.service';
 
@@ -88,49 +47,21 @@ export interface IDuplicateProductEvent {
   providers: [provideNativeDateAdapter()],
   imports: [
     CommonModule,
-    MatExpansionModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
+    MatAccordion,
     ExpansionPanelComponent,
     PanelHeaderComponent,
-    DisableControlDirective,
+    PanelContentComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductComponent implements OnInit {
-  productService = inject(ProductService);
-  categoriesService = inject(CategoriesService);
-  filtersService = inject(FiltersService);
-  collectionsService = inject(CollectionsService);
-  flagsService = inject(FlagsService);
-  brandsService = inject(BrandsService);
-  suppliersService = inject(SuppliersService);
-  variationsService = inject(VariationsService);
-  fb = inject(FormBuilder);
+export class ProductComponent {
   readonly dialog = inject(MatDialog);
   readonly cdr = inject(ChangeDetectorRef);
 
-  categories$ = this.categoriesService.getAllCategories();
-  filters$ = this.filtersService.getAllFilters();
-  collections$ = this.collectionsService.getAllCollections();
-  flags$ = this.flagsService.getAllFlags();
-  brands$ = this.brandsService.getAllBrands();
-  suppliers$ = this.suppliersService.getAllSuppliers();
-  variations$ = this.variationsService.getAllVariations();
+  productService = inject(ProductService);
 
   get isSimpleProduct() {
     return this.productForm().controls.type.value === EProductType.SIMPLE;
-  }
-
-  get skus(): ISkuFormArray {
-    return this.productForm()?.get('skus') as ISkuFormArray;
   }
 
   get created(): boolean {
@@ -138,111 +69,14 @@ export class ProductComponent implements OnInit {
   }
 
   productForm = input.required<FormGroup<IProductForm>>();
-  selectedVariation = signal<IVariationsResponseItem | null>(null);
-  deleteProduct = output<void>();
-  duplicateProduct = output<IDuplicateProductEvent>();
+
   opened = signal(false);
   loading = signal(false);
   hasError = signal(false);
   incrementalDuplicate = signal(0);
 
-  private _destroy$ = new EventEmitter<void>();
-
-  ngOnInit() {
-    if (this.isSimpleProduct && this.skus.length === 0) {
-      this.skus.push(this.createSku());
-    }
-
-    if (!this.isSimpleProduct && this.skus.length) {
-      this.variations$
-        .pipe(
-          take(1),
-          takeUntil(this._destroy$),
-          map(
-            (item) =>
-              item.data.find(
-                (variation) =>
-                  variation.id === this.productForm().controls.variations.value
-              ) ?? null
-          ),
-          tap((item: IVariationsResponseItem | null) => {
-            this.selectedVariation.set(item);
-            const skusVariationsIds = this.skus.value.map(
-              (item) => item.variation_id
-            );
-
-            const filteredValues =
-              item?.values.data.filter((value) =>
-                skusVariationsIds.includes(value.id)
-              ) ?? [];
-
-            this.productForm().patchValue({
-              variation_values: filteredValues,
-            });
-          })
-        )
-        .subscribe();
-    }
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
-  onSelectVariation(
-    event: MatOptionSelectionChange<number>,
-    item: IVariationsResponseItem
-  ) {
-    if (!event.isUserInput) return;
-
-    this.selectedVariation.set(item);
-    this.productForm().controls.variation_values.reset();
-    this.productForm().controls.skus.clear();
-  }
-
-  onSelectVariationValue(
-    event: MatOptionSelectionChange<IVariationValuesItem>
-  ) {
-    if (!event.isUserInput) return;
-
-    const { value, selected } = event.source;
-
-    if (selected) {
-      const newSku = this.createSku({
-        variation_id: value.id,
-        name: value.name,
-      });
-      this.skus.push(newSku);
-    } else {
-      const index = this.skus.value.findIndex((item: any) => {
-        return item?.variation_id === value.id;
-      });
-
-      if (index > -1) this.productForm().controls.skus.removeAt(index);
-    }
-  }
-
-  createSku({
-    variation_id = null,
-    name = null,
-  }: {
-    variation_id?: number | null;
-    name?: string | null;
-  } = {}): FormGroup<ISkuForm> {
-    return this.fb.group({
-      id: new FormControl<number | null>(null),
-      variation_id: new FormControl<number | null>(variation_id),
-      name: new FormControl<string | null>(name),
-      sku: new FormControl<string>('', {
-        nonNullable: true,
-        validators: Validators.required,
-      }),
-      price_cost: new FormControl<number>(0, { nonNullable: true }),
-      price_sale: new FormControl<number>(0, { nonNullable: true }),
-      price_discount: new FormControl<number>(0, { nonNullable: true }),
-    });
-  }
+  deleteProduct = output<void>();
+  duplicateProduct = output<IDuplicateProductEvent>();
 
   setLoading(loading: boolean) {
     this.loading.set(loading);

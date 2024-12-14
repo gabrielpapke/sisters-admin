@@ -1,6 +1,9 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  EventEmitter,
+  inject,
   input,
   output,
 } from '@angular/core';
@@ -20,6 +23,8 @@ import { EProductType } from '../product.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelHeaderComponent {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   productForm = input.required<FormGroup<IProductForm>>();
   isProductCreated = input.required<boolean>();
   hasError = input.required<boolean>();
@@ -30,5 +35,19 @@ export class PanelHeaderComponent {
 
   get isSimpleProduct() {
     return this.productForm().controls.type.value === EProductType.SIMPLE;
+  }
+
+  private _destroy$ = new EventEmitter<void>();
+
+  ngOnInit() {
+    this.productForm().controls.name.valueChanges.subscribe(() => {
+      console.log('changed!');
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
