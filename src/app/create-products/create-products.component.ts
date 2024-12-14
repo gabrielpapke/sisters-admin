@@ -16,15 +16,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
 import { HeaderComponent } from '../components/header/header.component';
+import { ESupplier } from '../services/suppliers.service';
+import { IVariationValuesItem } from '../services/variations.service';
+import { GeneralActionsComponent } from './components/general-actions/general-actions.component';
 import {
   EProductType,
   IDuplicateProductEvent,
   ISkuForm,
   ProductComponent,
-} from '../product/product.component';
-import { ESupplier } from '../services/suppliers.service';
-import { IVariationValuesItem } from '../services/variations.service';
-import { GeneralActionsComponent } from './components/general-actions/general-actions.component';
+} from './components/product/product.component';
 
 export type ISkuFormArray = FormArray<FormGroup<ISkuForm>>;
 

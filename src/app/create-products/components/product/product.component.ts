@@ -40,23 +40,23 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { DeleteProductModalComponent } from '../components/delete-product-modal/delete-product-modal.component';
+import { DeleteProductModalComponent } from '../../../components/delete-product-modal/delete-product-modal.component';
 import {
   IProductForm,
   ISkuFormArray,
-} from '../create-products/create-products.component';
-import { DisableControlDirective } from '../directives/disable-control.directive';
-import { BrandsService } from '../services/brands.service';
-import { CategoriesService } from '../services/categories.service';
-import { CollectionsService } from '../services/collections.service';
-import { FiltersService } from '../services/filters.service';
-import { FlagsService } from '../services/flags.service';
-import { SuppliersService } from '../services/suppliers.service';
+} from '../../../create-products/create-products.component';
+import { DisableControlDirective } from '../../../directives/disable-control.directive';
+import { BrandsService } from '../../../services/brands.service';
+import { CategoriesService } from '../../../services/categories.service';
+import { CollectionsService } from '../../../services/collections.service';
+import { FiltersService } from '../../../services/filters.service';
+import { FlagsService } from '../../../services/flags.service';
+import { SuppliersService } from '../../../services/suppliers.service';
 import {
   IVariationsResponseItem,
   IVariationValuesItem,
   VariationsService,
-} from '../services/variations.service';
+} from '../../../services/variations.service';
 import { ProductService } from './product.service';
 
 export interface ISkuForm {
