@@ -1,0 +1,41 @@
+<form
+  class="grid grid-cols-1 md:grid-cols-[1fr_2fr_150px_auto] gap-2 items-center"
+  [formGroup]="formItem()"
+  (ngSubmit)="download()"
+>
+  <mat-form-field>
+    <mat-label>Nome do produto</mat-label>
+    <input
+      matInput
+      [formControl]="formItem().controls.name"
+      [disableControl]="loading()"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>URL</mat-label>
+    <input
+      matInput
+      [formControl]="formItem().controls.url"
+      [disableControl]="loading()"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Fornecedor</mat-label>
+    <mat-select
+      [formControl]="formItem().controls.supplier"
+      [disableControl]="loading()"
+    >
+      @for (supplier of suppliers$ | async; track supplier) {
+      <mat-option [value]="supplier">{{ supplier }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <div class="h-14 mb-5 flex items-center gap-2 justify-center">
+    <app-download-actions
+      [formItem]="formItem()"
+      [loading]="loading()"
+      [success]="success()"
+      [error]="error()"
+    />
+  </div>
+</form>

@@ -1,0 +1,9 @@
+@use "@angular/material" as mat;
+
+.delete {
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--mat-sys-error),
+    )
+  );
+}

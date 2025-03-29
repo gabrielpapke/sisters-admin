@@ -1,0 +1,29 @@
+@if (!loading()) {
+<button
+  mat-icon-button
+  type="submit"
+  [disabled]="success() || formItem().invalid"
+>
+  @if (error()) {
+  <mat-icon>replay</mat-icon>
+  } @else if (success()) {
+  <mat-icon>check</mat-icon>
+  } @else {
+  <mat-icon>download</mat-icon>
+  }
+</button>
+} @else {
+<button mat-icon-button type="button">
+  <mat-spinner diameter="24"></mat-spinner>
+</button>
+}
+
+<button
+  class="delete"
+  type="button"
+  [disabled]="loading()"
+  (click)="deleteItem.emit()"
+  mat-icon-button
+>
+  <mat-icon>delete</mat-icon>
+</button>

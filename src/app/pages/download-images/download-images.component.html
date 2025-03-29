@@ -1,0 +1,30 @@
+<app-header
+  title="Baixar Imagens"
+  description="Baixe as imagens do site dos produtos"
+/>
+
+<div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+  <button mat-flat-button (click)="addFormItem()">Adicionar produto</button>
+
+  <button
+    mat-flat-button
+    (click)="clearAllItems()"
+    [disabled]="!items.controls.length"
+  >
+    <mat-icon>delete</mat-icon>
+    Remover todos
+  </button>
+</div>
+
+<div class="flex flex-col gap-4">
+  @for (item of items.controls; track item; let i = $index) {
+  <app-download-item [formItem]="item" (deleteItem)="onDeleteItem(i)" />
+  } @empty {
+  <mat-card appearance="outlined" class="py-10">
+    <mat-card-content class="text-center"
+      ><span class="font-medium">Nenhum produto adicionado.</span> <br />
+      Utilize as ações acima para adicionar.</mat-card-content
+    >
+  </mat-card>
+  }
+</div>

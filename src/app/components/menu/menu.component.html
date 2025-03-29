@@ -30,6 +30,16 @@
       (click)="onMenuItemClick.emit()"
       >Cadastrar Produto</a
     >
+
+    <a
+      #itemDownloadImages
+      routerLink="/download-images"
+      routerLinkActive="active"
+      [activated]="itemDownloadImages._hostElement.classList.contains('active')"
+      mat-list-item
+      (click)="onMenuItemClick.emit()"
+      >Baixar imagens</a
+    >
     <a
       #itemConfigurations
       routerLink="/configuracoes"
