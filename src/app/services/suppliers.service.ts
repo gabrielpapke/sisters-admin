@@ -18,7 +18,7 @@ export class SuppliersService {
     return of(Object.values(ESupplier));
   }
 
-  getMeasureBySupply(supplier: ESupplier): string {
+  getMeasureBySupplier(supplier: ESupplier): string {
     const measures: Record<ESupplier, string> = {
       [ESupplier.EL]:
         '<p><img src="https://s3.sa-east-1.amazonaws.com/king-assets.yampi.me/dooki/65e7bdbc03726/65e7bdbc0372d.png" alt="Tabela de Medidas" /></p>',

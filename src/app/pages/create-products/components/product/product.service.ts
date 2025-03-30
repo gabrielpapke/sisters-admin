@@ -142,7 +142,7 @@ export class ProductService {
         video: '',
         description: null,
         specifications: null,
-        measures: this.suppliersService.getMeasureBySupply(supplier),
+        measures: this.suppliersService.getMeasureBySupplier(supplier),
         gift_value: 0,
         seo_title: name,
         seo_description: null,
