@@ -32,6 +32,7 @@
   </mat-form-field>
   <div class="h-14 mb-5 flex items-center gap-2 justify-center">
     <app-download-actions
+      (deleteItem)="deleteItem.emit()"
       [formItem]="formItem()"
       [loading]="loading()"
       [success]="success()"
