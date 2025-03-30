@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DisableControlDirective } from '@directives/disable-control.directive';
 import { ESupplier, SuppliersService } from '@services/suppliers.service';
+import { environment } from 'src/environments/environment';
 import { DownloadActionsComponent } from '../download-actions/download-actions.component';
 
 export interface IDownloadImageForm {
@@ -76,7 +77,7 @@ export class DownloadItemComponent {
       ],
     };
 
-    fetch('http://localhost:3000/export-images', {
+    fetch(`${environment.apiUrl}/export-images`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
