@@ -41,6 +41,7 @@ export interface IProductForm {
   variations: FormControl<number | null>;
   variation_values: FormControl<IVariationValuesItem[] | null>;
   skus: ISkuFormArray;
+  site_url: FormControl<string | null>;
 }
 
 @Component({
@@ -133,6 +134,7 @@ export class CreateProductsComponent {
               )
             : []
         ),
+        site_url: new FormControl(form?.value?.site_url ?? null),
       })
     );
 

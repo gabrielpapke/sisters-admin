@@ -69,12 +69,8 @@ export class DownloadItemComponent {
     this.success.set(false);
     const data = {
       supplier: this.formItem().value.supplier,
-      products: [
-        {
-          url: this.formItem().value.url,
-          name: this.formItem().value.name,
-        },
-      ],
+      url: this.formItem().value.url,
+      name: this.formItem().value.name,
     };
 
     fetch(`${environment.apiUrl}/export-images`, {

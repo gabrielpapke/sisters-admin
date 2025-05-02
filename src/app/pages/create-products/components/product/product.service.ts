@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ESupplier, SuppliersService } from '@services/suppliers.service';
+import { environment } from 'src/environments/environment';
 import { EProductType, ISkuForm } from './product.component';
 
 export interface IProductRequest {
@@ -15,6 +16,7 @@ export interface IProductRequest {
   flags: number[];
   variations: number[];
   skus: Partial<ISkuForm>[];
+  site_url: string | null;
 }
 
 interface IProductResponse {
@@ -123,62 +125,66 @@ export class ProductService {
     collections,
     variations,
     skus,
+    site_url,
   }: IProductRequest) {
     return this.http.post<IProductResponse>(
-      'https://api.dooki.com.br/v2/sisters-fitness/catalog/products?include=skus',
+      `${environment.apiUrl}/create-products`,
       {
-        simple: type === EProductType.SIMPLE,
-        brand_id: brand,
-        erp_id: null,
-        active: false,
-        searchable: true,
-        is_digital: false,
-        buy_similars: false,
-        priority: 1,
-        rating: 5,
-        ncm: null,
-        name,
-        slug: null,
-        video: '',
-        description: null,
-        specifications: null,
-        measures: this.suppliersService.getMeasureBySupplier(supplier),
-        gift_value: 0,
-        seo_title: name,
-        seo_description: null,
-        seo_keywords: null,
-        canonical_url: null,
-        search_terms: null,
-        categories_ids: categories,
-        flags_ids: flags,
-        collections_ids: collections,
-        filters_values_ids: filters,
-        use_different_images: false,
-        variations_ids: variations,
-        skus: skus.map((item) => ({
-          sku: item.sku,
-          erp_id: '',
-          barcode: '',
-          price_cost: item.price_cost,
-          price_sale: item.price_sale,
-          price_discount: item.price_discount,
-          weight: 0.4,
-          height: 8,
-          width: 21,
-          length: 28,
-          quantity_managed: true,
-          stock_quantity: 0,
-          stock_min_quantity: 0,
-          availability: 1,
-          availability_soldout: -1,
-          blocked_sale: false,
-          variations_values_ids: item.variation_id ? [item.variation_id] : null,
-          images: [
-            {
-              url: 'https://images.yampi.me/assets/stores/sisters-fitness/uploads/images/camisao-estampado-abacaxi-66de1e3b26a5c-large.jpg',
-            },
-          ],
-        })),
+        product: {
+          simple: type === EProductType.SIMPLE,
+          brand_id: brand,
+          erp_id: null,
+          active: false,
+          searchable: true,
+          is_digital: false,
+          buy_similars: false,
+          priority: 1,
+          rating: 5,
+          ncm: null,
+          name,
+          slug: null,
+          video: '',
+          description: null,
+          specifications: null,
+          measures: this.suppliersService.getMeasureBySupplier(supplier),
+          gift_value: 0,
+          seo_title: name,
+          seo_description: null,
+          seo_keywords: null,
+          canonical_url: null,
+          search_terms: null,
+          categories_ids: categories,
+          flags_ids: flags,
+          collections_ids: collections,
+          filters_values_ids: filters,
+          use_different_images: false,
+          variations_ids: variations,
+          skus: skus.map((item) => ({
+            sku: item.sku,
+            erp_id: '',
+            barcode: '',
+            price_cost: item.price_cost,
+            price_sale: item.price_sale,
+            price_discount: item.price_discount,
+            weight: 0.4,
+            height: 8,
+            width: 21,
+            length: 28,
+            quantity_managed: true,
+            stock_quantity: 0,
+            stock_min_quantity: 0,
+            availability: 1,
+            availability_soldout: -1,
+            blocked_sale: false,
+            variations_values_ids: item.variation_id
+              ? [item.variation_id]
+              : null,
+
+            images: [],
+          })),
+        },
+        supplier,
+        site_url,
       }
     );
   }

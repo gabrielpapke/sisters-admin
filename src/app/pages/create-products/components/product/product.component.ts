@@ -98,6 +98,7 @@ export class ProductComponent {
       collections,
       variations,
       skus,
+      site_url,
     } = this.productForm().value;
 
     this.setLoading(true);
@@ -116,6 +117,7 @@ export class ProductComponent {
         flags: flags ?? [],
         variations: variations ? [variations] : [],
         skus: skus as Partial<ISkuForm>[],
+        site_url: site_url ?? null,
       })
       .pipe(
         catchError((error) => {

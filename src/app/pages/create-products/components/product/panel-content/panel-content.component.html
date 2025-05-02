@@ -35,6 +35,15 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field class="md:col-span-4">
+      <mat-label>URL do produto</mat-label>
+      <input
+        matInput
+        [formControl]="productForm().controls.site_url"
+        [disableControl]="loading()"
+      />
+    </mat-form-field>
+
     <mat-form-field *ngIf="!isSimpleProduct">
       <mat-label>Variações</mat-label>
       <mat-select
@@ -184,6 +193,7 @@
       </div>
     </div>
   </div>
+
   <mat-action-row *ngIf="!isProductCreated()">
     <button
       mat-button
