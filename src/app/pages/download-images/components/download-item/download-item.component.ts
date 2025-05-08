@@ -21,9 +21,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DisableControlDirective } from '@directives/disable-control.directive';
+import { DownloadImagesService } from '@pages/download-images/download-images.service';
 import { ESupplier, SuppliersService } from '@services/suppliers.service';
-import { environment } from 'src/environments/environment';
+import { catchError, EMPTY, finalize } from 'rxjs';
 import { DownloadActionsComponent } from '../download-actions/download-actions.component';
+
+export interface IDownloadImage {
+  name: string;
+  url: string;
+  supplier: ESupplier;
+}
 
 export interface IDownloadImageForm {
   name: FormControl<string | null>;
@@ -51,6 +58,7 @@ export interface IDownloadImageForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DownloadItemComponent {
+  private downloadImagesService = inject(DownloadImagesService);
   private suppliersService = inject(SuppliersService);
   private snackBar = inject(MatSnackBar);
 
@@ -67,42 +75,29 @@ export class DownloadItemComponent {
     this.loading.set(true);
     this.error.set(false);
     this.success.set(false);
-    const data = {
-      supplier: this.formItem().value.supplier,
-      url: this.formItem().value.url,
-      name: this.formItem().value.name,
+    const data: IDownloadImage = {
+      supplier: this.formItem().value.supplier!,
+      url: this.formItem().value.url!,
+      name: this.formItem().value.name!,
     };
 
-    fetch(`${environment.apiUrl}/export-images`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // Lança um erro se o status HTTP não for 2xx
-          throw new Error(
-            `Erro HTTP: ${response.status} - ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((result) => {
+    this.downloadImagesService
+      .export(data)
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        catchError(() => {
+          this.snackBar.open('Falha ao baixar imagem');
+          this.error.set(true);
+          return EMPTY;
+        })
+      )
+      .subscribe((result) => {
         if (result.imageUrls && Array.isArray(result.imageUrls)) {
           result.imageUrls.forEach((imageUrl: string) => {
             this.downloadImage(imageUrl);
           });
           this.success.set(true);
         }
-      })
-      .catch((error) => {
-        this.snackBar.open('Falha ao baixar imagem');
-        this.error.set(true);
-      })
-      .finally(() => {
-        this.loading.set(false);
       });
   }
 
