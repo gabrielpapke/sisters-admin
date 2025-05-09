@@ -5,11 +5,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/app/components/*"],
-      "@services/*": ["src/app/services/*"],
-      "@guards/*": ["src/app/guards/*"],
-      "@directives/*": ["src/app/directives/*"],
-      "@pages/*": ["src/app/pages/*"]
+      "@dashboard/*": ["src/app/dashboard/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@guards/*": ["src/app/shared/guards/*"],
+      "@directives/*": ["src/app/shared/directives/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

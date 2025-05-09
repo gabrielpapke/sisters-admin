@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenService } from '@services/token.service';
+import { TokenService } from '@dashboard/services/token.service';
 
 export const hasTokenGuard: CanActivateFn = (route, state) => {
   const tokenService = inject(TokenService);

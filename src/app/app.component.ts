@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from './components/menu/menu.component';
+import { MenuComponent } from '@dashboard/components/menu/menu.component';
 
 @Component({
   selector: 'app-root',

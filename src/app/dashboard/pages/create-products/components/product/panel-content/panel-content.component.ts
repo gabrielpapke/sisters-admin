@@ -25,22 +25,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DisableControlDirective } from '@directives/disable-control.directive';
 import {
   IProductForm,
   ISkuFormArray,
-} from '@pages/create-products/create-products.component';
-import { BrandsService } from '@services/brands.service';
-import { CategoriesService } from '@services/categories.service';
-import { CollectionsService } from '@services/collections.service';
-import { FiltersService } from '@services/filters.service';
-import { FlagsService } from '@services/flags.service';
-import { SuppliersService } from '@services/suppliers.service';
+} from '@dashboard/pages/create-products/create-products.component';
+import { BrandsService } from '@dashboard/services/brands.service';
+import { CategoriesService } from '@dashboard/services/categories.service';
+import { CollectionsService } from '@dashboard/services/collections.service';
+import { FiltersService } from '@dashboard/services/filters.service';
+import { FlagsService } from '@dashboard/services/flags.service';
+import { SuppliersService } from '@dashboard/services/suppliers.service';
 import {
   IVariationsResponseItem,
   IVariationValuesItem,
   VariationsService,
-} from '@services/variations.service';
+} from '@dashboard/services/variations.service';
+import { DisableControlDirective } from '@shared/directives/disable-control.directive';
 import { map, take, takeUntil, tap } from 'rxjs';
 import { EProductType, ISkuForm } from '../product.component';
 

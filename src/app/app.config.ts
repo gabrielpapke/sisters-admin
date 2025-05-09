@@ -8,9 +8,9 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { authInterceptor } from '@dashboard/services/auth.interceptor';
+import { errorHandlerInterceptor } from '@dashboard/services/error-handler.interceptor';
 import { routes } from './app.routes';
-import { authInterceptor } from './services/auth.interceptor';
-import { errorHandlerInterceptor } from './services/error-handler.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

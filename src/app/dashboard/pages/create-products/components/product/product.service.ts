@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ESupplier, SuppliersService } from '@services/suppliers.service';
+import {
+  ESupplier,
+  SuppliersService,
+} from '@dashboard/services/suppliers.service';
 import { environment } from 'src/environments/environment';
 import { EProductType, ISkuForm } from './product.component';
 

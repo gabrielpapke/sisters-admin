@@ -8,7 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { HeaderComponent } from '@components/header/header.component';
+import { HeaderComponent } from '@dashboard/components/header/header.component';
 import {
   DownloadItemComponent,
   IDownloadImageForm,

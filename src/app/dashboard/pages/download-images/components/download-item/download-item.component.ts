@@ -20,9 +20,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DownloadImagesService } from '@dashboard/pages/download-images/download-images.service';
+import {
+  ESupplier,
+  SuppliersService,
+} from '@dashboard/services/suppliers.service';
 import { DisableControlDirective } from '@directives/disable-control.directive';
-import { DownloadImagesService } from '@pages/download-images/download-images.service';
-import { ESupplier, SuppliersService } from '@services/suppliers.service';
 import { catchError, EMPTY, finalize } from 'rxjs';
 import { DownloadActionsComponent } from '../download-actions/download-actions.component';
 
