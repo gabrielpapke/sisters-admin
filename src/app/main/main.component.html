@@ -1,0 +1,28 @@
+<mat-sidenav-container class="example-container h-full">
+  <mat-sidenav
+    #sidenav
+    mode="over"
+    class="sidenav border-r"
+    [fixedInViewport]="true"
+    [fixedTopGap]="0"
+    [fixedBottomGap]="0"
+  >
+    <app-menu
+      (onCloseButtonClick)="sidenav.close()"
+      (onMenuItemClick)="sidenav.close()"
+      (onLogoutClick)="logout()"
+    />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="gap-4 text-white">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon class="text-white">menu</mat-icon>
+      </button>
+      Sisters Fitness</mat-toolbar
+    >
+    <div class="p-6">
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

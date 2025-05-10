@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenService } from '@dashboard/services/token.service';
+import { TokenService } from '../../main/admin/services/token.service';
 
 export const hasTokenGuard: CanActivateFn = (route, state) => {
   const tokenService = inject(TokenService);
@@ -10,6 +10,6 @@ export const hasTokenGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  router.navigate(['/configuracoes']);
+  router.navigate(['/admin/configuracoes']);
   return false;
 };
