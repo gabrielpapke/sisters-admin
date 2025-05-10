@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, UrlSegment } from '@angular/router';
 import { DashboardComponent } from '@seller/pages/dashboard/dashboard.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { PermissionDeniedComponent } from '@shared/components/permission-denied/permission-denied.component';
@@ -29,6 +29,14 @@ export const routes: Routes = [
     component: MainComponent,
     children: [
       {
+        matcher: (segments: UrlSegment[]) => {
+          const path = segments.map((segment) => segment.path).join('/');
+          const regex = /^(seller|admin)\/permission-denied$/;
+          return regex.test(path) ? { consumed: segments } : null;
+        },
+        component: PermissionDeniedComponent,
+      },
+      {
         path: 'admin',
         component: AdminComponent,
         canActivate: [rolePermissionGuard],
@@ -48,10 +56,6 @@ export const routes: Routes = [
           {
             path: '',
             component: DashboardComponent,
-          },
-          {
-            path: 'permission-denied',
-            component: PermissionDeniedComponent,
           },
           { path: '**', component: NotFoundComponent },
         ],

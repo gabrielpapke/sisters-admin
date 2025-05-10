@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { PermissionDeniedComponent } from '@shared/components/permission-denied/permission-denied.component';
 import { hasTokenGuard } from '@shared/guards/has-token.guard';
 import { ConfigComponent } from './pages/config/config.component';
 import { CreateProductsComponent } from './pages/create-products/create-products.component';
@@ -18,10 +17,6 @@ export const adminRoutes: Routes = [
   {
     path: 'download-images',
     component: DownloadImagesComponent,
-  },
-  {
-    path: 'permission-denied',
-    component: PermissionDeniedComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];
